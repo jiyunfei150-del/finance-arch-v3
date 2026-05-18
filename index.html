@@ -6,425 +6,56 @@
 <title>财务后台系统架构图</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root {
-  --fg:      #0f172a;
-  --fg-2:    #475569;
-  --fg-3:    #94a3b8;
-  --border:  #e2e8f0;
-  --bg:      #ffffff;
-  --bg-page: #f8fafc;
-
-  /* zone colors */
-  --z-src:   #eff6ff;  --z-src-b:  #bfdbfe;  --z-src-t:  #1d4ed8;
-  --z-core:  #fafafa;  --z-core-b: #d1d5db;  --z-core-t: #111827;
-  --z-out:   #f0fdf4;  --z-out-b:  #bbf7d0;  --z-out-t:  #15803d;
-  --z-dec:   #fdf4ff;  --z-dec-b:  #e9d5ff;  --z-dec-t:  #7e22ce;
-  --z-perm:  #fff1f2;  --z-perm-b: #fecdd3;  --z-perm-t: #be123c;
-
-  /* node colors */
-  --n-core:  #1e293b;
-  --n-bpm:   #1e3a5f;
-  --n-green: #14532d;
-  --n-blue:  #1e3a5f;
-  --n-pur:   #4c1d95;
-  --n-red:   #9f1239;
-}
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html, body {
+body {
   font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  background: var(--bg-page);
-  color: var(--fg);
-  font-size: 13px;
+  background: #f8fafc;
   -webkit-font-smoothing: antialiased;
 }
-
 .page {
-  max-width: 1480px;
+  max-width: 1500px;
   margin: 0 auto;
   padding: 28px 32px 40px;
-  background: var(--bg);
+  background: #fff;
   min-height: 100vh;
 }
-
-/* ── HEADER ── */
 header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  border-bottom: 2px solid var(--border);
+  border-bottom: 2px solid #e2e8f0;
   padding-bottom: 16px;
   margin-bottom: 24px;
 }
-.hd-title { font-size: 22px; font-weight: 800; letter-spacing: -0.3px; }
-.hd-sub   { font-size: 12px; color: var(--fg-3); margin-top: 3px; }
-.hd-sub span + span::before { content: ' · '; }
+h1 { font-size: 22px; font-weight: 800; color: #0f172a; letter-spacing: -0.3px; }
+.sub { font-size: 12px; color: #94a3b8; margin-top: 4px; }
+.sub span+span::before { content: ' · '; }
 .btn-print {
-  border: 1px solid var(--border);
-  background: var(--bg);
-  color: var(--fg-2);
-  border-radius: 5px;
-  padding: 6px 14px;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  font-family: inherit;
+  border: 1px solid #cbd5e1; background: #fff; color: #64748b;
+  border-radius: 5px; padding: 6px 14px; font-size: 12px;
+  font-weight: 500; cursor: pointer; font-family: inherit;
 }
-.btn-print:hover { background: var(--bg-page); }
-
-/* ── FIGURE LABEL ── */
-.fig-label {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--fg-3);
-  letter-spacing: 0.5px;
-  margin-bottom: 14px;
+.btn-print:hover { background: #f8fafc; }
+.canvas-wrap {
+  width: 100%;
+  overflow-x: auto;
 }
-
-/* ── ZONE ── */
-.zone {
-  border-radius: 10px;
-  border: 1.5px solid;
-  padding: 14px 16px 16px;
-  position: relative;
+svg {
+  display: block;
+  font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif;
 }
-.zone-title {
-  position: absolute;
-  top: -11px;
-  left: 14px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  padding: 1px 10px;
-  border-radius: 4px;
-  border: 1.5px solid;
-}
-
-.zone-src  { background: var(--z-src);  border-color: var(--z-src-b); }
-.zone-src  .zone-title { background: var(--z-src);  border-color: var(--z-src-b);  color: var(--z-src-t); }
-.zone-out  { background: var(--z-out);  border-color: var(--z-out-b); }
-.zone-out  .zone-title { background: var(--z-out);  border-color: var(--z-out-b);  color: var(--z-out-t); }
-.zone-dec  { background: var(--z-dec);  border-color: var(--z-dec-b); }
-.zone-dec  .zone-title { background: var(--z-dec);  border-color: var(--z-dec-b);  color: var(--z-dec-t); }
-.zone-perm { background: var(--z-perm); border-color: var(--z-perm-b); }
-.zone-perm .zone-title { background: var(--z-perm); border-color: var(--z-perm-b); color: var(--z-perm-t); }
-.zone-core { background: #f9fafb;       border-color: #d1d5db; }
-.zone-core .zone-title { background: #f9fafb; border-color: #d1d5db; color: #374151; }
-
-/* ── NODE ── */
-.node {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-radius: 7px;
-  padding: 8px 12px;
-  border: 1.5px solid;
-  text-align: center;
-  line-height: 1.35;
-  transition: box-shadow 0.15s, transform 0.15s;
-  cursor: default;
-}
-.node:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0,0,0,0.1); }
-.node .n-title { font-size: 12.5px; font-weight: 700; }
-.node .n-sub   { font-size: 10px; opacity: 0.7; margin-top: 2px; }
-
-/* node themes */
-.nd-white  { background: #fff;     border-color: #d1d5db; color: var(--fg); }
-.nd-blue   { background: #1e3a5f;  border-color: #1e3a5f; color: #fff; }
-.nd-dark   { background: #1e293b;  border-color: #1e293b; color: #fff; }
-.nd-green  { background: #166534;  border-color: #166534; color: #fff; }
-.nd-teal   { background: #0f766e;  border-color: #0f766e; color: #fff; }
-.nd-purple { background: #6d28d9;  border-color: #6d28d9; color: #fff; }
-.nd-red    { background: #be123c;  border-color: #be123c; color: #fff; }
-.nd-amber  { background: #b45309;  border-color: #b45309; color: #fff; }
-.nd-gray   { background: #475569;  border-color: #475569; color: #fff; }
-
-/* CORE node – bigger */
-.nd-core {
-  background: #1e293b;
-  border-color: #1e293b;
-  color: #fff;
-  border-radius: 10px;
-  padding: 16px 20px;
-  min-width: 130px;
-}
-.nd-core .n-title { font-size: 15px; font-weight: 800; }
-.nd-core .n-sub   { font-size: 11px; opacity: 0.75; margin-top: 4px; }
-
-/* BPM node */
-.nd-bpm {
-  background: #1e3a5f;
-  border-color: #1e3a5f;
-  color: #fff;
-  border-radius: 10px;
-  padding: 14px 18px;
-  min-width: 110px;
-}
-.nd-bpm .n-title { font-size: 13px; font-weight: 800; }
-
-/* SMALL TAG node */
-.node-tag {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 5px;
-  padding: 6px 10px;
-  border: 1px solid;
-  font-size: 11.5px;
-  font-weight: 600;
-  white-space: nowrap;
-  cursor: default;
-  transition: box-shadow 0.15s;
-}
-.node-tag:hover { box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
-.nt-white  { background: #fff;    border-color: #d1d5db; color: var(--fg); }
-.nt-blue   { background: #eff6ff; border-color: #93c5fd; color: #1d4ed8; }
-.nt-green  { background: #f0fdf4; border-color: #86efac; color: #15803d; }
-.nt-purple { background: #fdf4ff; border-color: #d8b4fe; color: #7e22ce; }
-.nt-amber  { background: #fffbeb; border-color: #fcd34d; color: #b45309; }
-.nt-red    { background: #fff1f2; border-color: #fda4af; color: #be123c; }
-.nt-gray   { background: #f1f5f9; border-color: #cbd5e1; color: #475569; }
-
-/* ── ARROW (SVG-based, inline) ── */
-.arrows-layer {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  pointer-events: none;
-  overflow: visible;
-}
-
-/* ── LAYOUT ── */
-
-/* Top: source zone */
-.zone-src-wrap {
-  margin-bottom: 0;
-}
-.src-nodes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-  margin-top: 6px;
-}
-
-/* Middle row: core + decision */
-.mid-row {
-  display: grid;
-  grid-template-columns: 1fr 220px;
-  gap: 16px;
-  margin: 16px 0;
-}
-.mid-left {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-/* Core zone inner: core node + BPM node + flows */
-.core-inner {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-}
-.core-main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-.core-flows {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.flow-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-/* Bottom: output zone */
-.out-nodes {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 6px;
-  align-items: flex-start;
-}
-.out-sub {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  align-items: flex-start;
-}
-
-/* DWH mini zone */
-.dwh-zone {
-  background: #fffbeb;
-  border: 1px dashed #fcd34d;
-  border-radius: 7px;
-  padding: 10px 14px 12px;
-  position: relative;
-  margin-top: 6px;
-}
-.dwh-title {
-  position: absolute;
-  top: -10px; left: 10px;
-  font-size: 10px; font-weight: 700;
-  color: #b45309; background: #fffbeb;
-  padding: 1px 8px;
-  border-radius: 3px;
-  border: 1px dashed #fcd34d;
-}
-.dwh-pipeline {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-top: 2px;
-}
-.dwh-node {
-  background: #fff;
-  border: 1px solid #fcd34d;
-  border-top: 2px solid #b45309;
-  border-radius: 5px;
-  padding: 6px 10px;
-  text-align: center;
-  min-width: 64px;
-}
-.dwh-node .dn { font-size: 13px; font-weight: 800; color: #92400e; font-family: 'Inter', monospace; }
-.dwh-node .dr { font-size: 9px; color: #b45309; margin-top: 1px; }
-.dwh-node .dc { font-size: 14px; font-weight: 800; color: #b45309; margin-top: 4px; font-family: 'Inter', monospace; }
-.dwh-node .du { font-size: 10px; color: #d97706; font-weight: 400; }
-.dwh-arr { color: #b45309; font-size: 16px; font-weight: 700; }
-.dwh-sep { width: 1px; background: #fcd34d; margin: 4px 6px; align-self: stretch; }
-
-/* ── ARROW LABELS ── */
-.arrow-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 10px;
-  color: var(--fg-3);
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  padding: 1px 6px;
-  white-space: nowrap;
-}
-.arrow-label.solid  { border-style: solid;  color: var(--fg-2); }
-.arrow-label.dashed { border-style: dashed; }
-.arrow-label.dotted { border-style: dotted; }
-.al-arr { font-size: 13px; font-weight: 700; }
-
-/* ── LEGEND ── */
-.legend-box {
-  background: #fff;
-  border: 1px solid var(--border);
-  border-radius: 7px;
-  padding: 12px 14px;
-  font-size: 11px;
-  color: var(--fg-2);
-}
-.legend-box .lb-title { font-weight: 700; color: var(--fg); margin-bottom: 8px; font-size: 12px; }
-.legend-row { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; }
-.legend-row:last-child { margin-bottom: 0; }
-.leg-line {
-  width: 32px; height: 0;
-  display: inline-block;
-  flex-shrink: 0;
-}
-.leg-solid  { border-top: 2px solid #374151; }
-.leg-dashed { border-top: 2px dashed #94a3b8; }
-.leg-dotted { border-top: 2px dotted #94a3b8; }
-
-/* ── SECTION LABELS ── */
-.section-arrow {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin: 6px 0 4px;
-  font-size: 11px;
-  color: var(--fg-3);
-}
-.sa-line { flex: 1; height: 1px; border-top: 1px dashed var(--border); }
-.sa-text { background: var(--bg-page); padding: 0 6px; }
-
-/* ── FLOW ARROWS between zones ── */
-.zone-connector {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 32px;
-  position: relative;
-}
-.zc-col {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-}
-.zc-arrow { font-size: 16px; font-weight: 700; color: var(--fg-3); line-height: 1; }
-.zc-label { font-size: 10px; color: var(--fg-3); white-space: nowrap; }
-
-/* ── DATA INPUTS column ── */
-.src-col-wrap {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 4px;
-}
-.src-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.sg-title {
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  color: var(--fg-3);
-  text-transform: uppercase;
-  margin-bottom: 2px;
-}
-
-/* perm side */
-.perm-col {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-/* ── GRID for main diagram ── */
-.diag {
-  display: grid;
-  grid-template-columns: 1fr 200px;
-  gap: 16px;
-  align-items: start;
-}
-.diag-main { display: flex; flex-direction: column; gap: 0; }
-
-/* ── FOOTER ── */
 footer {
-  margin-top: 24px;
-  padding-top: 14px;
-  border-top: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 11px;
-  color: var(--fg-3);
+  margin-top: 20px; padding-top: 14px;
+  border-top: 1px solid #e2e8f0;
+  display: flex; justify-content: space-between;
+  align-items: center; font-size: 11px; color: #94a3b8;
 }
 .chips { display: flex; gap: 6px; flex-wrap: wrap; }
 .chip {
-  background: var(--bg); border: 1px solid var(--border);
+  background: #fff; border: 1px solid #e2e8f0;
   border-radius: 3px; padding: 2px 8px;
-  color: var(--fg-2); font-size: 11px; font-weight: 500;
+  color: #475569; font-size: 11px; font-weight: 500;
 }
-
 @media print {
   @page { size: A3 landscape; margin: 10mm; }
   body { background: white; }
@@ -436,349 +67,505 @@ footer {
 <body>
 <div class="page">
 
-<!-- HEADER -->
 <header>
   <div>
-    <div class="hd-title">财务后台系统架构图</div>
-    <div class="hd-sub">
+    <h1>财务后台系统架构图</h1>
+    <div class="sub">
       <span>以财务后台为核心</span>
       <span>数据来源 · 处理流转 · 执行去向</span>
-      <span>v3.0 · 2026-05</span>
+      <span>v3.1 · 2026-05</span>
     </div>
   </div>
   <button class="btn-print" onclick="window.print()">🖨 打印 / PDF</button>
 </header>
 
-<div class="fig-label">Figure 1. 财务后台系统逻辑架构图</div>
+<div class="canvas-wrap">
+<svg viewBox="0 0 1400 920" width="1400" height="920" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <!-- arrowheads -->
+  <marker id="arr-dark" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L0,6 L8,3 z" fill="#334155"/>
+  </marker>
+  <marker id="arr-blue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L0,6 L8,3 z" fill="#1d4ed8"/>
+  </marker>
+  <marker id="arr-green" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L0,6 L8,3 z" fill="#15803d"/>
+  </marker>
+  <marker id="arr-amber" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L0,6 L8,3 z" fill="#b45309"/>
+  </marker>
+  <marker id="arr-purple" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L0,6 L8,3 z" fill="#7e22ce"/>
+  </marker>
+  <marker id="arr-red" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L0,6 L8,3 z" fill="#be123c"/>
+  </marker>
+  <marker id="arr-gray" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L0,6 L8,3 z" fill="#94a3b8"/>
+  </marker>
+  <marker id="arr-teal" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+    <path d="M0,0 L0,6 L8,3 z" fill="#0f766e"/>
+  </marker>
+</defs>
 
-<div class="diag">
+<!-- ═══════════════════════════════════════════════
+     BACKGROUND ZONES
+══════════════════════════════════════════════════ -->
 
-<!-- ══════════ LEFT MAIN ══════════ -->
-<div class="diag-main">
+<!-- Left: Input Zone -->
+<rect x="10" y="10" width="300" height="870" rx="10" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.5"/>
+<text x="160" y="32" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8" letter-spacing="1">输入层（数据来源）</text>
 
-<!-- ① 输入层 -->
-<div class="zone zone-src">
-  <div class="zone-title">输入层（数据来源）</div>
-  <div class="src-nodes" style="margin-top:14px">
+<!-- Center-top: DWH Zone -->
+<rect x="330" y="10" width="400" height="200" rx="10" fill="#fffbeb" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="5,3"/>
+<text x="530" y="32" text-anchor="middle" font-size="11" font-weight="700" fill="#b45309" letter-spacing="1">数仓处理层 · StarRocks 3.3.18</text>
 
-    <!-- 业务系统 -->
-    <div class="src-group">
-      <div class="sg-title">业务系统</div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap">
-        <div class="node-tag nt-blue">充值中心</div>
-        <div class="node-tag nt-blue">投放平台</div>
-        <div class="node-tag nt-blue">发行 SDK</div>
-        <div class="node-tag nt-blue">广分系统</div>
-        <div class="node-tag nt-blue">运维平台</div>
-      </div>
-    </div>
+<!-- Center-mid: Core Zone -->
+<rect x="330" y="230" width="400" height="320" rx="10" fill="#f9fafb" stroke="#d1d5db" stroke-width="2"/>
+<text x="530" y="252" text-anchor="middle" font-size="11" font-weight="700" fill="#374151" letter-spacing="1">核心层（财务后台）</text>
 
-    <!-- 渠道 -->
-    <div class="src-group">
-      <div class="sg-title">渠道 / 外部 API</div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap">
-        <div class="node-tag nt-white">🍎 Apple IAP</div>
-        <div class="node-tag nt-white">🟢 Google Play</div>
-        <div class="node-tag nt-white">微信 / 支付宝</div>
-        <div class="node-tag nt-white">海外汇率 API</div>
-      </div>
-    </div>
+<!-- Center-bottom: Output Zone -->
+<rect x="330" y="570" width="400" height="310" rx="10" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1.5"/>
+<text x="530" y="592" text-anchor="middle" font-size="11" font-weight="700" fill="#15803d" letter-spacing="1">输出层（执行与核算）</text>
 
-    <!-- 管理系统 -->
-    <div class="src-group">
-      <div class="sg-title">管理系统</div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap">
-        <div class="node-tag nt-amber">BPM 审批流</div>
-        <div class="node-tag nt-amber">税友系统</div>
-        <div class="node-tag nt-amber">项目组数仓</div>
-      </div>
-    </div>
+<!-- Right-top: Decision Zone -->
+<rect x="750" y="10" width="280" height="200" rx="10" fill="#fdf4ff" stroke="#e9d5ff" stroke-width="1.5"/>
+<text x="890" y="32" text-anchor="middle" font-size="11" font-weight="700" fill="#7e22ce" letter-spacing="1">决策层</text>
 
-  </div>
+<!-- Right-mid: Permission Zone -->
+<rect x="750" y="230" width="280" height="320" rx="10" fill="#fff1f2" stroke="#fecdd3" stroke-width="1.5"/>
+<text x="890" y="252" text-anchor="middle" font-size="11" font-weight="700" fill="#be123c" letter-spacing="1">权限管控（贯穿全链路）</text>
 
-  <!-- 接入方式说明 -->
-  <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;padding-top:8px;border-top:1px dashed var(--z-src-b)">
-    <div class="arrow-label solid"><span class="al-arr">→</span>DataX · T+1</div>
-    <div class="arrow-label dashed"><span class="al-arr">⇢</span>Python 脚本 · 月同步</div>
-    <div class="arrow-label dotted"><span class="al-arr">⋯</span>API 接口 / Webhook</div>
-    <div class="arrow-label solid"><span class="al-arr">→</span>BPM 中转</div>
-  </div>
+<!-- Right-bottom: Legend -->
+<rect x="750" y="570" width="280" height="150" rx="10" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+<text x="890" y="592" text-anchor="middle" font-size="11" font-weight="700" fill="#475569" letter-spacing="1">图例 Legend</text>
+
+<!-- Far-right info -->
+<rect x="1050" y="10" width="340" height="860" rx="10" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5"/>
+<text x="1220" y="32" text-anchor="middle" font-size="11" font-weight="700" fill="#64748b" letter-spacing="1">系统说明</text>
+
+<!-- ═══════════════════════════════════════════════
+     INPUT NODES (Left column)
+══════════════════════════════════════════════════ -->
+
+<!-- Group: 业务系统 -->
+<text x="20" y="58" font-size="9" font-weight="700" fill="#94a3b8" letter-spacing="1.5">业务系统</text>
+
+<!-- 充值中心 -->
+<rect x="18" y="65" width="130" height="36" rx="6" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+<text x="83" y="87" text-anchor="middle" font-size="12" font-weight="600" fill="#1d4ed8">充值中心</text>
+
+<!-- 投放平台 -->
+<rect x="158" y="65" width="130" height="36" rx="6" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+<text x="223" y="87" text-anchor="middle" font-size="12" font-weight="600" fill="#1d4ed8">投放平台</text>
+
+<!-- 发行 SDK -->
+<rect x="18" y="111" width="130" height="36" rx="6" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+<text x="83" y="133" text-anchor="middle" font-size="12" font-weight="600" fill="#1d4ed8">发行 SDK</text>
+
+<!-- 广分系统 -->
+<rect x="158" y="111" width="130" height="36" rx="6" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+<text x="223" y="133" text-anchor="middle" font-size="12" font-weight="600" fill="#1d4ed8">广分系统</text>
+
+<!-- 运维平台 -->
+<rect x="18" y="157" width="130" height="36" rx="6" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+<text x="83" y="179" text-anchor="middle" font-size="12" font-weight="600" fill="#1d4ed8">运维平台</text>
+
+<!-- 项目组数仓 -->
+<rect x="158" y="157" width="130" height="36" rx="6" fill="#eff6ff" stroke="#93c5fd" stroke-width="1.5"/>
+<text x="223" y="179" text-anchor="middle" font-size="12" font-weight="600" fill="#1d4ed8">项目组数仓</text>
+
+<!-- Group: 渠道/外部 -->
+<text x="20" y="215" font-size="9" font-weight="700" fill="#94a3b8" letter-spacing="1.5">渠道 / 外部 API</text>
+
+<rect x="18" y="222" width="130" height="36" rx="6" fill="#fff" stroke="#d1d5db" stroke-width="1.5"/>
+<text x="83" y="244" text-anchor="middle" font-size="12" font-weight="600" fill="#374151">🍎 Apple IAP</text>
+
+<rect x="158" y="222" width="130" height="36" rx="6" fill="#fff" stroke="#d1d5db" stroke-width="1.5"/>
+<text x="223" y="244" text-anchor="middle" font-size="12" font-weight="600" fill="#374151">🟢 Google Play</text>
+
+<rect x="18" y="268" width="130" height="36" rx="6" fill="#fff" stroke="#d1d5db" stroke-width="1.5"/>
+<text x="83" y="290" text-anchor="middle" font-size="12" font-weight="600" fill="#374151">微信/支付宝</text>
+
+<rect x="158" y="268" width="130" height="36" rx="6" fill="#fff" stroke="#d1d5db" stroke-width="1.5"/>
+<text x="223" y="290" text-anchor="middle" font-size="12" font-weight="600" fill="#374151">海外汇率 API</text>
+
+<!-- Group: 管理系统 -->
+<text x="20" y="328" font-size="9" font-weight="700" fill="#94a3b8" letter-spacing="1.5">管理系统</text>
+
+<rect x="18" y="335" width="130" height="36" rx="6" fill="#fffbeb" stroke="#fcd34d" stroke-width="1.5"/>
+<text x="83" y="357" text-anchor="middle" font-size="12" font-weight="600" fill="#b45309">BPM 审批流</text>
+
+<rect x="158" y="335" width="130" height="36" rx="6" fill="#fffbeb" stroke="#fcd34d" stroke-width="1.5"/>
+<text x="223" y="357" text-anchor="middle" font-size="12" font-weight="600" fill="#b45309">税友系统</text>
+
+<!-- 银行 -->
+<rect x="18" y="381" width="270" height="36" rx="6" fill="#fffbeb" stroke="#fcd34d" stroke-width="1.5"/>
+<text x="153" y="403" text-anchor="middle" font-size="12" font-weight="600" fill="#b45309">CBS / 海外银行 API</text>
+
+<!-- ═══════════════════════════════════════════════
+     DWH NODES
+══════════════════════════════════════════════════ -->
+
+<!-- ODS -->
+<rect x="340" y="45" width="74" height="58" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1.5"/>
+<rect x="340" y="45" width="74" height="4" rx="3" fill="#b45309"/>
+<text x="377" y="71" text-anchor="middle" font-size="14" font-weight="800" fill="#92400e" font-family="'Inter',monospace">ODS</text>
+<text x="377" y="84" text-anchor="middle" font-size="9" fill="#b45309">贴源集散</text>
+<text x="377" y="96" text-anchor="middle" font-size="13" font-weight="700" fill="#b45309" font-family="'Inter',monospace">280<tspan font-size="10" font-weight="400" fill="#d97706">张</tspan></text>
+
+<!-- → -->
+<text x="421" y="78" text-anchor="middle" font-size="18" font-weight="700" fill="#b45309">→</text>
+
+<!-- DWD -->
+<rect x="432" y="45" width="74" height="58" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1.5"/>
+<rect x="432" y="45" width="74" height="4" rx="3" fill="#b45309"/>
+<text x="469" y="71" text-anchor="middle" font-size="14" font-weight="800" fill="#92400e" font-family="'Inter',monospace">DWD</text>
+<text x="469" y="84" text-anchor="middle" font-size="9" fill="#b45309">清洗对账</text>
+<text x="469" y="96" text-anchor="middle" font-size="13" font-weight="700" fill="#b45309" font-family="'Inter',monospace">110<tspan font-size="10" font-weight="400" fill="#d97706">张</tspan></text>
+
+<!-- → -->
+<text x="513" y="78" text-anchor="middle" font-size="18" font-weight="700" fill="#b45309">→</text>
+
+<!-- ADS -->
+<rect x="524" y="45" width="74" height="58" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1.5"/>
+<rect x="524" y="45" width="74" height="4" rx="3" fill="#b45309"/>
+<text x="561" y="71" text-anchor="middle" font-size="14" font-weight="800" fill="#92400e" font-family="'Inter',monospace">ADS</text>
+<text x="561" y="84" text-anchor="middle" font-size="9" fill="#b45309">结算报表</text>
+<text x="561" y="96" text-anchor="middle" font-size="13" font-weight="700" fill="#b45309" font-family="'Inter',monospace">100<tspan font-size="10" font-weight="400" fill="#d97706">张</tspan></text>
+
+<!-- | DIM -->
+<line x1="608" y1="50" x2="608" y2="98" stroke="#fcd34d" stroke-width="1" stroke-dasharray="3,2"/>
+
+<!-- DIM -->
+<rect x="618" y="45" width="74" height="58" rx="6" fill="#fff" stroke="#fcd34d" stroke-width="1.5"/>
+<rect x="618" y="45" width="74" height="4" rx="3" fill="#b45309"/>
+<text x="655" y="71" text-anchor="middle" font-size="14" font-weight="800" fill="#92400e" font-family="'Inter',monospace">DIM</text>
+<text x="655" y="84" text-anchor="middle" font-size="9" fill="#b45309">维度配置</text>
+<text x="655" y="96" text-anchor="middle" font-size="13" font-weight="700" fill="#b45309" font-family="'Inter',monospace">300<tspan font-size="10" font-weight="400" fill="#d97706">张</tspan></text>
+
+<!-- DWH note -->
+<text x="530" y="130" text-anchor="middle" font-size="10" fill="#b45309">ODS 不直出业务数据，DIM 独立维护供各层 JOIN</text>
+
+<!-- ═══════════════════════════════════════════════
+     CORE NODE - 财务后台
+══════════════════════════════════════════════════ -->
+
+<rect x="400" y="268" width="160" height="56" rx="10" fill="#1e293b" stroke="#1e293b" stroke-width="2"/>
+<text x="480" y="292" text-anchor="middle" font-size="16" font-weight="800" fill="#fff">财务后台</text>
+<text x="480" y="310" text-anchor="middle" font-size="10" fill="#94a3b8">自研 · Python Django</text>
+
+<!-- App modules inside core zone -->
+<!-- 结算模块 label -->
+<text x="340" y="348" font-size="9" font-weight="700" fill="#15803d" letter-spacing="1.5">结算模块</text>
+
+<rect x="338" y="355" width="90" height="28" rx="5" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+<text x="383" y="373" text-anchor="middle" font-size="10.5" font-weight="600" fill="#15803d">海外内购结算</text>
+
+<rect x="436" y="355" width="80" height="28" rx="5" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+<text x="476" y="373" text-anchor="middle" font-size="10.5" font-weight="600" fill="#15803d">谷歌/苹果结算</text>
+
+<rect x="524" y="355" width="80" height="28" rx="5" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+<text x="564" y="373" text-anchor="middle" font-size="10.5" font-weight="600" fill="#15803d">广告收入结算</text>
+
+<rect x="612" y="355" width="80" height="28" rx="5" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+<text x="652" y="373" text-anchor="middle" font-size="10.5" font-weight="600" fill="#15803d">国内三方/联运</text>
+
+<!-- 财务操作 label -->
+<text x="340" y="403" font-size="9" font-weight="700" fill="#1d4ed8" letter-spacing="1.5">财务操作</text>
+
+<rect x="338" y="410" width="90" height="28" rx="5" fill="#eff6ff" stroke="#93c5fd" stroke-width="1"/>
+<text x="383" y="428" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1d4ed8">成本费用</text>
+
+<rect x="436" y="410" width="100" height="28" rx="5" fill="#eff6ff" stroke="#93c5fd" stroke-width="1"/>
+<text x="486" y="428" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1d4ed8">银行流水匹配推凭</text>
+
+<rect x="544" y="410" width="80" height="28" rx="5" fill="#eff6ff" stroke="#93c5fd" stroke-width="1"/>
+<text x="584" y="428" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1d4ed8">暂估/实际核销</text>
+
+<rect x="632" y="410" width="60" height="28" rx="5" fill="#eff6ff" stroke="#93c5fd" stroke-width="1"/>
+<text x="662" y="428" text-anchor="middle" font-size="10.5" font-weight="600" fill="#1d4ed8">凭证管理</text>
+
+<!-- 辅助 label -->
+<text x="340" y="458" font-size="9" font-weight="700" fill="#64748b" letter-spacing="1.5">系统管理</text>
+
+<rect x="338" y="465" width="90" height="28" rx="5" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+<text x="383" y="483" text-anchor="middle" font-size="10.5" font-weight="600" fill="#475569">主数据管理</text>
+
+<rect x="436" y="465" width="90" height="28" rx="5" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+<text x="481" y="483" text-anchor="middle" font-size="10.5" font-weight="600" fill="#475569">系统/权限管理</text>
+
+<rect x="534" y="465" width="80" height="28" rx="5" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+<text x="574" y="483" text-anchor="middle" font-size="10.5" font-weight="600" fill="#475569">汇率换算</text>
+
+<rect x="622" y="465" width="80" height="28" rx="5" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1"/>
+<text x="662" y="483" text-anchor="middle" font-size="10.5" font-weight="600" fill="#475569">告警通知</text>
+
+<!-- ═══════════════════════════════════════════════
+     OUTPUT NODES
+══════════════════════════════════════════════════ -->
+
+<!-- 金蝶 ERP -->
+<rect x="340" y="600" width="100" height="48" rx="8" fill="#166534" stroke="#166534" stroke-width="1.5"/>
+<text x="390" y="621" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">金蝶 ERP</text>
+<text x="390" y="637" text-anchor="middle" font-size="10" fill="#bbf7d0">总账 / 核算</text>
+
+<!-- 资金管理 -->
+<rect x="456" y="600" width="100" height="48" rx="8" fill="#0f766e" stroke="#0f766e" stroke-width="1.5"/>
+<text x="506" y="619" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">资金管理平台</text>
+<text x="506" y="635" text-anchor="middle" font-size="10" fill="#99f6e4">自研</text>
+<!-- CBS sub -->
+<rect x="456" y="658" width="46" height="24" rx="4" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+<text x="479" y="674" text-anchor="middle" font-size="10" font-weight="600" fill="#15803d">CBS 国内</text>
+<rect x="508" y="658" width="46" height="24" rx="4" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+<text x="531" y="674" text-anchor="middle" font-size="10" font-weight="600" fill="#15803d">海外 API</text>
+
+<!-- 大象 -->
+<rect x="572" y="600" width="90" height="48" rx="8" fill="#b45309" stroke="#b45309" stroke-width="1.5"/>
+<text x="617" y="621" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">大象</text>
+<text x="617" y="637" text-anchor="middle" font-size="10" fill="#fde68a">票据 / 开票</text>
+
+<!-- BPM -->
+<rect x="678" y="600" width="90" height="48" rx="8" fill="#1e3a5f" stroke="#1e3a5f" stroke-width="1.5"/>
+<text x="723" y="621" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">BPM</text>
+<text x="723" y="637" text-anchor="middle" font-size="10" fill="#93c5fd">流程控制</text>
+
+<!-- 税友 -->
+<rect x="340" y="700" width="90" height="48" rx="8" fill="#475569" stroke="#475569" stroke-width="1.5"/>
+<text x="385" y="721" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">税友系统</text>
+<text x="385" y="737" text-anchor="middle" font-size="10" fill="#e2e8f0">税务申报</text>
+
+<!-- 报表 -->
+<rect x="446" y="700" width="90" height="48" rx="8" fill="#1e293b" stroke="#1e293b" stroke-width="1.5"/>
+<text x="491" y="721" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">财务报表</text>
+<text x="491" y="737" text-anchor="middle" font-size="10" fill="#94a3b8">P&amp;L / 资产负债</text>
+
+<!-- 银行对账 -->
+<rect x="552" y="700" width="90" height="48" rx="8" fill="#1e293b" stroke="#1e293b" stroke-width="1.5"/>
+<text x="597" y="721" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">银行对账</text>
+<text x="597" y="737" text-anchor="middle" font-size="10" fill="#94a3b8">流水核对</text>
+
+<!-- 管报 -->
+<rect x="658" y="700" width="90" height="48" rx="8" fill="#1e293b" stroke="#1e293b" stroke-width="1.5"/>
+<text x="703" y="721" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">管理报表</text>
+<text x="703" y="737" text-anchor="middle" font-size="10" fill="#94a3b8">管报 / 看板</text>
+
+<!-- ═══════════════════════════════════════════════
+     DECISION NODES (Right top)
+══════════════════════════════════════════════════ -->
+
+<rect x="760" y="48" width="120" height="48" rx="8" fill="#6d28d9" stroke="#6d28d9"/>
+<text x="820" y="69" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">PA 报表系统</text>
+<text x="820" y="84" text-anchor="middle" font-size="10" fill="#ddd6fe">结算+付款指令源</text>
+
+<rect x="892" y="48" width="120" height="48" rx="8" fill="#6d28d9" stroke="#6d28d9"/>
+<text x="952" y="69" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">QuickBI</text>
+<text x="952" y="84" text-anchor="middle" font-size="10" fill="#ddd6fe">可视化看板</text>
+
+<text x="890" y="130" text-anchor="middle" font-size="10" fill="#7e22ce">PA 是结算与服务器付款的指令源头，</text>
+<text x="890" y="144" text-anchor="middle" font-size="10" fill="#7e22ce">不仅是报表工具</text>
+
+<!-- ═══════════════════════════════════════════════
+     PERMISSION ZONE (Right mid)
+══════════════════════════════════════════════════ -->
+
+<!-- RBAC -->
+<rect x="760" y="265" width="260" height="80" rx="6" fill="#fff" stroke="#fecdd3" stroke-width="1"/>
+<text x="770" y="283" font-size="10" font-weight="700" fill="#be123c">RBAC 角色模型</text>
+
+<rect x="768" y="290" width="56" height="24" rx="4" fill="#fff1f2" stroke="#fecdd3"/>
+<text x="796" y="306" text-anchor="middle" font-size="10" font-weight="600" fill="#be123c">用户</text>
+<text x="830" y="305" text-anchor="middle" font-size="14" font-weight="700" fill="#be123c">→</text>
+<rect x="841" y="290" width="56" height="24" rx="4" fill="#fff1f2" stroke="#fecdd3"/>
+<text x="869" y="306" text-anchor="middle" font-size="10" font-weight="600" fill="#be123c">角色</text>
+<text x="903" y="305" text-anchor="middle" font-size="14" font-weight="700" fill="#be123c">→</text>
+<rect x="914" y="290" width="56" height="24" rx="4" fill="#fff1f2" stroke="#fecdd3"/>
+<text x="942" y="306" text-anchor="middle" font-size="10" font-weight="600" fill="#be123c">权限</text>
+
+<text x="770" y="332" font-size="9" fill="#f43f5e">菜单权限</text>
+<text x="830" y="332" font-size="9" fill="#f43f5e">功能权限</text>
+<text x="890" y="332" font-size="9" fill="#f43f5e">数据权限</text>
+
+<!-- Row isolation -->
+<rect x="760" y="356" width="260" height="70" rx="6" fill="#fff" stroke="#fecdd3" stroke-width="1"/>
+<text x="770" y="374" font-size="10" font-weight="700" fill="#be123c">数据行级隔离</text>
+<rect x="770" y="381" width="56" height="24" rx="4" fill="#fff1f2" stroke="#fecdd3"/>
+<text x="798" y="397" text-anchor="middle" font-size="10" font-weight="600" fill="#be123c">公司</text>
+<rect x="834" y="381" width="56" height="24" rx="4" fill="#fff1f2" stroke="#fecdd3"/>
+<text x="862" y="397" text-anchor="middle" font-size="10" font-weight="600" fill="#be123c">项目</text>
+<rect x="898" y="381" width="56" height="24" rx="4" fill="#fff1f2" stroke="#fecdd3"/>
+<text x="926" y="397" text-anchor="middle" font-size="10" font-weight="600" fill="#be123c">项目组</text>
+<text x="960" y="397" font-size="10" fill="#94a3b8">…</text>
+
+<!-- Flow steps -->
+<rect x="760" y="436" width="260" height="100" rx="6" fill="#fff" stroke="#fecdd3" stroke-width="1"/>
+<text x="770" y="454" font-size="10" font-weight="700" fill="#be123c">权限申请流程</text>
+<text x="770" y="471" font-size="11" fill="#374151">① 使用方提单</text>
+<text x="770" y="489" font-size="11" fill="#374151">② 财务审批</text>
+<text x="770" y="507" font-size="11" fill="#374151">③ 财务信息化配置角色</text>
+<text x="770" y="525" font-size="11" fill="#374151">④ 授权完成并抄送</text>
+
+<!-- ═══════════════════════════════════════════════
+     LEGEND (Right bottom)
+══════════════════════════════════════════════════ -->
+
+<line x1="768" y1="615" x2="808" y2="615" stroke="#334155" stroke-width="2" marker-end="url(#arr-dark)"/>
+<text x="815" y="619" font-size="11" fill="#475569">主数据 / 凭证 / 关键回写</text>
+
+<line x1="768" y1="638" x2="808" y2="638" stroke="#94a3b8" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arr-gray)"/>
+<text x="815" y="642" font-size="11" fill="#475569">API 拉取 / 报表查询</text>
+
+<line x1="768" y1="661" x2="808" y2="661" stroke="#94a3b8" stroke-width="2" stroke-dasharray="2,2" marker-end="url(#arr-gray)"/>
+<text x="815" y="665" font-size="11" fill="#475569">影像 / OCR / 回单回传</text>
+
+<line x1="768" y1="684" x2="808" y2="684" stroke="#b45309" stroke-width="2" marker-end="url(#arr-amber)"/>
+<text x="815" y="688" font-size="11" fill="#475569">DataX T+1 同步</text>
+
+<line x1="768" y1="707" x2="808" y2="707" stroke="#1d4ed8" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arr-blue)"/>
+<text x="815" y="711" font-size="11" fill="#475569">Python 脚本 / 月同步</text>
+
+<!-- ═══════════════════════════════════════════════
+     FAR RIGHT: System info panel
+══════════════════════════════════════════════════ -->
+
+<text x="1060" y="58" font-size="10" font-weight="700" fill="#94a3b8" letter-spacing="1">接入方式说明</text>
+<rect x="1060" y="66" width="320" height="200" rx="6" fill="#fff" stroke="#e2e8f0"/>
+<text x="1070" y="84" font-size="10.5" fill="#374151" font-weight="600">DataX · T+1</text>
+<text x="1070" y="100" font-size="10" fill="#64748b">充值/投放/发行/广分/运维/项目组数仓</text>
+<text x="1070" y="116" font-size="10.5" fill="#374151" font-weight="600">Python 脚本 · 月同步</text>
+<text x="1070" y="132" font-size="10" fill="#64748b">Apple IAP / Google Play 海外账单</text>
+<text x="1070" y="148" font-size="10.5" fill="#374151" font-weight="600">API 接口</text>
+<text x="1070" y="164" font-size="10" fill="#64748b">税友系统、海外汇率实时拉取</text>
+<text x="1070" y="180" font-size="10.5" fill="#374151" font-weight="600">BPM 中转</text>
+<text x="1070" y="196" font-size="10" fill="#64748b">银行流水/付款回执 经 BPM 流转进入系统</text>
+<text x="1070" y="212" font-size="10.5" fill="#374151" font-weight="600">Webhook / 实时推送</text>
+<text x="1070" y="228" font-size="10" fill="#64748b">BPM 审批事件回调 / 开票结果回传</text>
+<text x="1070" y="252" font-size="10" fill="#94a3b8">注：所有来源数据统一写入 StarRocks ODS 层</text>
+
+<text x="1060" y="290" font-size="10" font-weight="700" fill="#94a3b8" letter-spacing="1">输出去向说明</text>
+<rect x="1060" y="298" width="320" height="220" rx="6" fill="#fff" stroke="#e2e8f0"/>
+<text x="1070" y="316" font-size="10.5" fill="#374151" font-weight="600">金蝶 ERP</text>
+<text x="1070" y="332" font-size="10" fill="#64748b">推送科目金额、凭证明细账，完成总账核算</text>
+<text x="1070" y="349" font-size="10.5" fill="#374151" font-weight="600">资金管理平台</text>
+<text x="1070" y="365" font-size="10" fill="#64748b">下达资金出入账指令，对接 CBS 国内/海外 API</text>
+<text x="1070" y="382" font-size="10.5" fill="#374151" font-weight="600">大象</text>
+<text x="1070" y="398" font-size="10" fill="#64748b">触发开票 / 冲销执行，发票影像回传</text>
+<text x="1070" y="415" font-size="10.5" fill="#374151" font-weight="600">BPM</text>
+<text x="1070" y="431" font-size="10" fill="#64748b">发起付款申请、主数据修改，接收审批结果</text>
+<text x="1070" y="448" font-size="10.5" fill="#374151" font-weight="600">税友系统</text>
+<text x="1070" y="464" font-size="10" fill="#64748b">推送税务申报数据</text>
+<text x="1070" y="481" font-size="10.5" fill="#374151" font-weight="600">PA / QuickBI</text>
+<text x="1070" y="497" font-size="10" fill="#64748b">消费 ADS 数据，PA 同时是结算/付款指令源</text>
+
+<text x="1060" y="540" font-size="10" font-weight="700" fill="#94a3b8" letter-spacing="1">技术栈</text>
+<rect x="1060" y="548" width="320" height="100" rx="6" fill="#fff" stroke="#e2e8f0"/>
+<text x="1070" y="566" font-size="10.5" fill="#374151" font-weight="600">数仓</text>
+<text x="1070" y="582" font-size="10" fill="#64748b">StarRocks 3.3.18 · 790+ 张表</text>
+<text x="1070" y="600" font-size="10.5" fill="#374151" font-weight="600">后台</text>
+<text x="1070" y="616" font-size="10" fill="#64748b">Python Django · MySQL 8.0</text>
+<text x="1070" y="634" font-size="10.5" fill="#374151" font-weight="600">同步</text>
+<text x="1070" y="650" font-size="10" fill="#64748b">DataX + Hermes 增量同步引擎</text>
+
+<!-- ═══════════════════════════════════════════════
+     ARROWS: Input → DWH
+══════════════════════════════════════════════════ -->
+
+<!-- 业务系统 → ODS (DataX) -->
+<line x1="150" y1="175" x2="330" y2="70" stroke="#b45309" stroke-width="1.5" marker-end="url(#arr-amber)"/>
+<rect x="190" y="98" width="80" height="16" rx="3" fill="#fffbeb" stroke="#fcd34d"/>
+<text x="230" y="110" text-anchor="middle" font-size="9" fill="#b45309" font-weight="600">DataX · T+1</text>
+
+<!-- Apple/Google → ODS (Python) -->
+<line x1="150" y1="240" x2="335" y2="68" stroke="#1d4ed8" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-blue)"/>
+<rect x="180" y="130" width="88" height="16" rx="3" fill="#eff6ff" stroke="#93c5fd"/>
+<text x="224" y="142" text-anchor="middle" font-size="9" fill="#1d4ed8" font-weight="600">Python · 月同步</text>
+
+<!-- BPM → Core (Webhook) -->
+<path d="M 150 353 C 240 353 280 325 335 296" stroke="#b45309" stroke-width="1.5" stroke-dasharray="4,2" fill="none" marker-end="url(#arr-amber)"/>
+<rect x="185" y="318" width="80" height="16" rx="3" fill="#fffbeb" stroke="#fcd34d"/>
+<text x="225" y="330" text-anchor="middle" font-size="9" fill="#b45309" font-weight="600">BPM 中转</text>
+
+<!-- 税友 → Core (API) -->
+<path d="M 220 335 C 270 335 290 300 335 292" stroke="#475569" stroke-width="1.5" stroke-dasharray="3,2" fill="none" marker-end="url(#arr-gray)"/>
+
+<!-- 银行 → Core -->
+<path d="M 153 399 C 230 399 290 320 335 296" stroke="#b45309" stroke-width="1.5" fill="none" marker-end="url(#arr-amber)"/>
+<rect x="160" y="370" width="88" height="16" rx="3" fill="#fffbeb" stroke="#fcd34d"/>
+<text x="204" y="382" text-anchor="middle" font-size="9" fill="#b45309" font-weight="600">流水/回单推送</text>
+
+<!-- ═══════════════════════════════════════════════
+     ARROWS: DWH → Core
+══════════════════════════════════════════════════ -->
+
+<line x1="530" y1="210" x2="530" y2="263" stroke="#334155" stroke-width="2" marker-end="url(#arr-dark)"/>
+<rect x="460" y="228" width="140" height="16" rx="3" fill="#f9fafb" stroke="#d1d5db"/>
+<text x="530" y="240" text-anchor="middle" font-size="9" fill="#374151" font-weight="600">ADS 结果 + DIM 配置下发</text>
+
+<!-- ═══════════════════════════════════════════════
+     ARROWS: Core → Output
+══════════════════════════════════════════════════ -->
+
+<!-- Core → 金蝶 -->
+<line x1="420" y1="545" x2="390" y2="595" stroke="#15803d" stroke-width="2" marker-end="url(#arr-green)"/>
+<rect x="360" y="562" width="88" height="16" rx="3" fill="#f0fdf4" stroke="#86efac"/>
+<text x="404" y="574" text-anchor="middle" font-size="9" fill="#15803d" font-weight="600">凭证/科目明细</text>
+
+<!-- Core → 资金管理 -->
+<line x1="480" y1="548" x2="490" y2="595" stroke="#0f766e" stroke-width="2" marker-end="url(#arr-teal)"/>
+<rect x="458" y="564" width="72" height="16" rx="3" fill="#f0fdfa" stroke="#99f6e4"/>
+<text x="494" y="576" text-anchor="middle" font-size="9" fill="#0f766e" font-weight="600">资金指令</text>
+
+<!-- Core → 大象 -->
+<line x1="540" y1="548" x2="590" y2="595" stroke="#b45309" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arr-amber)"/>
+<rect x="544" y="565" width="56" height="16" rx="3" fill="#fffbeb" stroke="#fcd34d"/>
+<text x="572" y="577" text-anchor="middle" font-size="9" fill="#b45309" font-weight="600">触发开票</text>
+
+<!-- Core → BPM (双向) -->
+<path d="M 620 500 C 680 500 700 570 700 595" stroke="#1d4ed8" stroke-width="1.5" stroke-dasharray="5,3" fill="none" marker-end="url(#arr-blue)"/>
+<rect x="640" y="538" width="80" height="16" rx="3" fill="#eff6ff" stroke="#93c5fd"/>
+<text x="680" y="550" text-anchor="middle" font-size="9" fill="#1d4ed8" font-weight="600">付款申请/主数据</text>
+
+<!-- BPM → Core (回传) -->
+<path d="M 700 598 C 700 560 660 510 630 495" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,2" fill="none" marker-end="url(#arr-gray)"/>
+<rect x="660" y="570" width="72" height="16" rx="3" fill="#f8fafc" stroke="#e2e8f0"/>
+<text x="696" y="582" text-anchor="middle" font-size="9" fill="#64748b" font-weight="600">审批结果回传</text>
+
+<!-- Core → 税友 -->
+<line x1="400" y1="548" x2="378" y2="695" stroke="#475569" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-gray)"/>
+<rect x="348" y="620" width="72" height="16" rx="3" fill="#f1f5f9" stroke="#cbd5e1"/>
+<text x="384" y="632" text-anchor="middle" font-size="9" fill="#475569" font-weight="600">申报数据推送</text>
+
+<!-- Core → 财务报表 -->
+<line x1="480" y1="548" x2="480" y2="695" stroke="#334155" stroke-width="1.5" marker-end="url(#arr-dark)"/>
+
+<!-- Core → 管理报表 -->
+<line x1="560" y1="548" x2="580" y2="695" stroke="#334155" stroke-width="1.5" marker-end="url(#arr-dark)"/>
+
+<!-- ═══════════════════════════════════════════════
+     ARROWS: Decision ↔ Core
+══════════════════════════════════════════════════ -->
+
+<!-- PA → Core (拉取) -->
+<path d="M 820 100 C 820 200 700 230 730 296" stroke="#7e22ce" stroke-width="1.5" stroke-dasharray="5,3" fill="none" marker-end="url(#arr-purple)"/>
+<rect x="760" y="190" width="80" height="16" rx="3" fill="#fdf4ff" stroke="#e9d5ff"/>
+<text x="800" y="202" text-anchor="middle" font-size="9" fill="#7e22ce" font-weight="600">拉取 ADS 数据</text>
+
+<!-- Core → PA (结算指令) -->
+<path d="M 725 285 C 755 230 790 170 820 100" stroke="#7e22ce" stroke-width="1.5" fill="none" marker-end="url(#arr-purple)"/>
+
+<!-- 大象 → Core (发票回传) -->
+<path d="M 617 648 C 617 670 570 680 550 710 C 530 730 510 730 500 690 C 490 670 500 565 510 548" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="2,2" fill="none" marker-end="url(#arr-gray)"/>
+
+<!-- ═══════════════════════════════════════════════
+     VERTICAL FLOW LABELS (center column)
+══════════════════════════════════════════════════ -->
+
+<!-- Input zone → DWH -->
+<rect x="420" y="215" width="120" height="14" rx="3" fill="none"/>
+
+</svg>
 </div>
-
-<!-- CONNECTOR ↓ -->
-<div class="zone-connector">
-  <div class="zc-col" style="flex:1">
-    <div style="height:1px;border-top:1px dashed var(--border);width:100%"></div>
-  </div>
-  <div style="display:flex;flex-direction:column;align-items:center;padding:0 16px">
-    <div class="zc-arrow">↓</div>
-    <div class="zc-label">写入数仓 ODS</div>
-  </div>
-  <div class="zc-col" style="flex:1">
-    <div style="height:1px;border-top:1px dashed var(--border);width:100%"></div>
-  </div>
-</div>
-
-<!-- ② 处理层：数仓 -->
-<div class="dwh-zone">
-  <div class="dwh-title">数仓处理层 · StarRocks 3.3.18</div>
-  <div class="dwh-pipeline">
-    <div class="dwh-node">
-      <div class="dn">ODS</div>
-      <div class="dr">贴源集散</div>
-      <div class="dc">280<span class="du">张</span></div>
-    </div>
-    <div class="dwh-arr">→</div>
-    <div class="dwh-node">
-      <div class="dn">DWD</div>
-      <div class="dr">清洗对账</div>
-      <div class="dc">110<span class="du">张</span></div>
-    </div>
-    <div class="dwh-arr">→</div>
-    <div class="dwh-node">
-      <div class="dn">ADS</div>
-      <div class="dr">结算报表</div>
-      <div class="dc">100<span class="du">张</span></div>
-    </div>
-    <div class="dwh-sep"></div>
-    <div class="dwh-node">
-      <div class="dn">DIM</div>
-      <div class="dr">维度配置</div>
-      <div class="dc">300<span class="du">张</span></div>
-    </div>
-  </div>
-</div>
-
-<!-- CONNECTOR ↓ -->
-<div class="zone-connector">
-  <div class="zc-col" style="flex:1">
-    <div style="height:1px;border-top:1px dashed var(--border);width:100%"></div>
-  </div>
-  <div style="display:flex;flex-direction:column;align-items:center;padding:0 16px">
-    <div class="zc-arrow">↓</div>
-    <div class="zc-label">ADS 结果 + DIM 配置下发</div>
-  </div>
-  <div class="zc-col" style="flex:1">
-    <div style="height:1px;border-top:1px dashed var(--border);width:100%"></div>
-  </div>
-</div>
-
-<!-- ③ 核心层：财务后台 -->
-<div class="zone zone-core">
-  <div class="zone-title">核心层（财务后台）</div>
-
-  <div style="display:grid;grid-template-columns:140px 1fr;gap:16px;margin-top:14px;align-items:start">
-
-    <!-- 中心节点 -->
-    <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
-      <div class="node nd-core">
-        <div class="n-title">财务后台</div>
-        <div class="n-sub">自研 · Python Django</div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:4px;width:100%">
-        <div class="node-tag nt-gray" style="width:100%;justify-content:center;font-size:10px">主数据管理</div>
-        <div class="node-tag nt-gray" style="width:100%;justify-content:center;font-size:10px">系统 / 权限管理</div>
-      </div>
-    </div>
-
-    <!-- 应用模块 -->
-    <div style="display:flex;flex-direction:column;gap:10px">
-
-      <!-- 结算模块 -->
-      <div>
-        <div class="sg-title" style="margin-bottom:5px">💰 结算模块</div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap">
-          <div class="node-tag nt-green">海外内购结算</div>
-          <div class="node-tag nt-green">谷歌结算</div>
-          <div class="node-tag nt-green">苹果结算</div>
-          <div class="node-tag nt-green">广告收入结算</div>
-          <div class="node-tag nt-green">国内三方结算</div>
-          <div class="node-tag nt-green">国内联运结算</div>
-        </div>
-      </div>
-
-      <!-- 财务操作 -->
-      <div>
-        <div class="sg-title" style="margin-bottom:5px">📋 财务操作</div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap">
-          <div class="node-tag nt-blue">成本费用</div>
-          <div class="node-tag nt-blue">银行流水匹配与推凭</div>
-          <div class="node-tag nt-blue">暂估 / 实际核销</div>
-          <div class="node-tag nt-blue">凭证管理</div>
-          <div class="node-tag nt-blue">汇率换算</div>
-        </div>
-      </div>
-
-      <!-- 触发动作 -->
-      <div style="padding-top:6px;border-top:1px dashed var(--border)">
-        <div class="sg-title" style="margin-bottom:5px">⚡ 触发 / 回写</div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap">
-          <div class="arrow-label solid"><span class="al-arr">→</span>触发开票 / 冲销 / 付款申请</div>
-          <div class="arrow-label solid"><span class="al-arr">→</span>主数据下发（项目/交易方维改）</div>
-          <div class="arrow-label dashed"><span class="al-arr">⇢</span>银行流水 / 回单状态查询</div>
-          <div class="arrow-label dotted"><span class="al-arr">⋯</span>发票影像 / OCR / 状态回传</div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<!-- CONNECTOR ↓ -->
-<div class="zone-connector">
-  <div class="zc-col" style="flex:1">
-    <div style="height:1px;border-top:1px dashed var(--border);width:100%"></div>
-  </div>
-  <div style="display:flex;flex-direction:column;align-items:center;padding:0 16px">
-    <div class="zc-arrow">↓</div>
-    <div class="zc-label">预处理凭证 · 核算数据 · 资金指令</div>
-  </div>
-  <div class="zc-col" style="flex:1">
-    <div style="height:1px;border-top:1px dashed var(--border);width:100%"></div>
-  </div>
-</div>
-
-<!-- ④ 输出层 -->
-<div class="zone zone-out">
-  <div class="zone-title">输出层（执行与核算）</div>
-  <div class="out-nodes" style="margin-top:14px">
-
-    <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-start">
-      <div class="node nd-green" style="min-width:100px">
-        <div class="n-title">金蝶 ERP</div>
-        <div class="n-sub">总账 / 核算</div>
-      </div>
-      <div style="display:flex;gap:5px">
-        <div class="arrow-label solid" style="font-size:9px"><span class="al-arr">↑</span>科目金额/明细账/凭证</div>
-      </div>
-    </div>
-
-    <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-start">
-      <div class="node nd-teal" style="min-width:100px">
-        <div class="n-title">资金管理平台</div>
-        <div class="n-sub">自研</div>
-      </div>
-      <div style="display:flex;gap:5px;flex-wrap:wrap">
-        <div class="arrow-label solid" style="font-size:9px"><span class="al-arr">↓</span>资金出入账</div>
-        <div class="node-tag nt-green" style="font-size:10px">CBS 国内</div>
-        <div class="node-tag nt-green" style="font-size:10px">海外 API</div>
-      </div>
-    </div>
-
-    <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-start">
-      <div class="node nd-amber" style="min-width:100px">
-        <div class="n-title">大象</div>
-        <div class="n-sub">票据 / 开票</div>
-      </div>
-      <div style="display:flex;gap:5px">
-        <div class="arrow-label dotted" style="font-size:9px"><span class="al-arr">⇢</span>开票执行</div>
-      </div>
-    </div>
-
-    <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-start">
-      <div class="node nd-blue" style="min-width:100px">
-        <div class="n-title">BPM</div>
-        <div class="n-sub">流程控制核心</div>
-      </div>
-      <div style="display:flex;gap:5px;flex-wrap:wrap">
-        <div class="arrow-label dashed" style="font-size:9px"><span class="al-arr">↔</span>服务器分层指令</div>
-        <div class="arrow-label dotted" style="font-size:9px"><span class="al-arr">⋯</span>发票影像/OCR/回传</div>
-      </div>
-    </div>
-
-    <div style="display:flex;flex-direction:column;gap:6px;align-items:flex-start">
-      <div class="node nd-gray" style="min-width:100px">
-        <div class="n-title">税友系统</div>
-        <div class="n-sub">税务申报</div>
-      </div>
-      <div style="display:flex;gap:5px">
-        <div class="arrow-label dashed" style="font-size:9px"><span class="al-arr">⇢</span>申报数据推送</div>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-</div><!-- /diag-main -->
-
-<!-- ══════════ RIGHT SIDE ══════════ -->
-<div style="display:flex;flex-direction:column;gap:14px">
-
-  <!-- 决策层 -->
-  <div class="zone zone-dec">
-    <div class="zone-title">决策层（分析与指令）</div>
-    <div style="margin-top:14px;display:flex;flex-direction:column;gap:8px">
-      <div class="node nd-purple" style="width:100%">
-        <div class="n-title">PA 报表系统</div>
-        <div class="n-sub">结算 + 服务器付款指令</div>
-      </div>
-      <div class="node nd-purple" style="width:100%">
-        <div class="n-title">QuickBI</div>
-        <div class="n-sub">可视化看板</div>
-      </div>
-      <div style="padding-top:6px;border-top:1px dashed var(--z-dec-b);font-size:10px;color:var(--z-dec-t)">
-        PA 不仅出报表，更是结算与服务器付款的指令源
-      </div>
-    </div>
-    <div style="margin-top:8px">
-      <div class="arrow-label dashed" style="font-size:9px;width:100%;justify-content:center"><span class="al-arr">←</span>从财务后台拉取 ADS 数据</div>
-    </div>
-  </div>
-
-  <!-- 权限管控 -->
-  <div class="zone zone-perm">
-    <div class="zone-title">权限管控（贯穿全链路）</div>
-    <div style="margin-top:14px;display:flex;flex-direction:column;gap:7px">
-
-      <div style="background:white;border:1px solid var(--z-perm-b);border-radius:5px;padding:8px 10px">
-        <div style="font-size:11px;font-weight:700;color:var(--z-perm-t);margin-bottom:4px">RBAC 角色模型</div>
-        <div style="display:flex;gap:4px;flex-wrap:wrap">
-          <span style="background:var(--z-perm);border:1px solid var(--z-perm-b);border-radius:3px;padding:1px 6px;font-size:10px;color:var(--z-perm-t);font-weight:600">菜单权限</span>
-          <span style="background:var(--z-perm);border:1px solid var(--z-perm-b);border-radius:3px;padding:1px 6px;font-size:10px;color:var(--z-perm-t);font-weight:600">功能权限</span>
-          <span style="background:var(--z-perm);border:1px solid var(--z-perm-b);border-radius:3px;padding:1px 6px;font-size:10px;color:var(--z-perm-t);font-weight:600">数据权限</span>
-        </div>
-      </div>
-
-      <div style="background:white;border:1px solid var(--z-perm-b);border-radius:5px;padding:8px 10px">
-        <div style="font-size:11px;font-weight:700;color:var(--z-perm-t);margin-bottom:4px">数据行级隔离</div>
-        <div style="display:flex;gap:4px;flex-wrap:wrap">
-          <span style="background:var(--z-perm);border:1px solid var(--z-perm-b);border-radius:3px;padding:1px 6px;font-size:10px;color:var(--z-perm-t);font-weight:600">公司</span>
-          <span style="background:var(--z-perm);border:1px solid var(--z-perm-b);border-radius:3px;padding:1px 6px;font-size:10px;color:var(--z-perm-t);font-weight:600">项目</span>
-          <span style="background:var(--z-perm);border:1px solid var(--z-perm-b);border-radius:3px;padding:1px 6px;font-size:10px;color:var(--z-perm-t);font-weight:600">项目组</span>
-        </div>
-      </div>
-
-      <div style="background:white;border:1px solid var(--z-perm-b);border-radius:5px;padding:8px 10px">
-        <div style="font-size:11px;font-weight:700;color:var(--z-perm-t);margin-bottom:5px">权限申请流程</div>
-        <div style="display:flex;flex-direction:column;gap:4px">
-          <div style="display:flex;align-items:center;gap:6px;font-size:11px">
-            <span style="font-weight:700;color:var(--z-perm-t);min-width:14px">①</span>使用方提单
-          </div>
-          <div style="display:flex;align-items:center;gap:6px;font-size:11px">
-            <span style="font-weight:700;color:var(--z-perm-t);min-width:14px">②</span>财务审批
-          </div>
-          <div style="display:flex;align-items:center;gap:6px;font-size:11px">
-            <span style="font-weight:700;color:var(--z-perm-t);min-width:14px">③</span>财务信息化配置角色
-          </div>
-          <div style="display:flex;align-items:center;gap:6px;font-size:11px">
-            <span style="font-weight:700;color:var(--z-perm-t);min-width:14px">④</span>授权完成并抄送
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 图例 -->
-  <div class="legend-box">
-    <div class="lb-title">图例 Legend</div>
-    <div class="legend-row"><div class="leg-line leg-solid"></div><span>主数据 / 凭证 / 关键回写</span></div>
-    <div class="legend-row"><div class="leg-line leg-dashed"></div><span>API 拉取 / 报表查询</span></div>
-    <div class="legend-row"><div class="leg-line leg-dotted"></div><span>影像 / 附件 / OCR / 回单回传</span></div>
-  </div>
-
-</div><!-- /right -->
-
-</div><!-- /diag -->
 
 <footer>
   <div class="chips">
@@ -789,7 +576,7 @@ footer {
     <span class="chip">BPM</span>
     <span class="chip">金蝶 ERP</span>
   </div>
-  <div>v3.0 · 2026-05 · Generated by 小D</div>
+  <div>v3.1 · 2026-05 · Generated by 小D</div>
 </footer>
 
 </div>
